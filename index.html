@@ -1,168 +1,433 @@
-<!DOCTYPE html>
-<head>
-<meta charset="utf-8">
-
-<style>
-html { 
-  background: url(images/pic01.jpg) no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-}
-
-
-body {
-
-color:#ffffff;
-font: 40px sans-serif;
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.x.axis path {
-  display: none;
-}
-
-.area.above {
-  fill: rgb(252,141,89);
-}
-
-.area.below {
-  fill: rgb(145,207,96);
-}
-
-.line {
-  fill: none;
-  stroke: #000;
-  stroke-width: 1.5px;
-}
-
-</style>
-</head>
-<body>
-<center>
-<h1> Mission Mars 2020 </h1>
-
+<!DOCTYPE HTML>
 <!--
-<h2> App<a href="#app"> .</a> </h2>-->
-<iframe src="https://cloud.saplumira.com/open?key=54019C5E8EBC0774E10000000A4E4243&type=HANALYTIC" width=80% height=700></iframe>
-<!--
+	Dopetrope by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+        <link rel="icon" 
+      type="image/png" 
+      href="images/favicon.png">
+		<title>Mission Mars 2020</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.dropotron.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-desktop.css" />
+		</noscript>
+        <style type="text/css">
+            .imgBox 
+            {    
+    		display:block; 
+    		opacity:1;
+    		filter:alpha(opacity=100); 0; } 
+            .imgBox:hover { opacity: 0.3 ; filter: alpha(opacity=10); }
+            .abc:hover { -moz-box-shadow: 0 0 5px #ccc; -webkit-box-shadow: 0 0 5px #ccc; box-shadow: 0 0 5px #ccc; } 
+           <!-- .panel {
+    width: 32px;
+    height: 32px;
+    margin: auto;
+    position: relative;
+}
 
-<script src="d3.v3.min.js"></script>
-<script>
+.card {
+    width: 32px;
+    height: 32px;
+    -o-transition: all .5s;
+    -ms-transition: all .5s;
+    -moz-transition: all .5s;
+    -webkit-transition: all .5s;
+    transition: all .5s;
+    -webkit-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
 
-var margin = {top: 20, right: 20, bottom: 30, left: 50},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+.front {
+    z-index: 2;
+   
+}
 
-var parseDate = d3.time.format("%Y%m%d").parse;
+.back {
+    z-index: 1;
+    -webkit-transform: rotateX(-180deg);
+    -ms-transform: rotateX(-180deg);
+    -moz-transform: rotateX(-180deg);  
+    transform: rotateX(-180deg);  
+   
+}
 
-var x = d3.time.scale()
-    .range([0, width]);
+.panel:hover .front {
+    z-index: 1;
+    -webkit-transform: rotateX(180deg);
+    -ms-transform: rotateX(180deg);
+    -moz-transform: rotateX(180deg);
+    transform: rotateX(180deg);
+}
 
-var y = d3.scale.linear()
-    .range([height, 0]);
+.panel:hover .back {
+    z-index: 2;   
+    -webkit-transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+}
+     -->       
+            
+            
+            
+            
+            </style>
+        <style>
+        
+        .flip-container {
+	perspective: 1000;
+}
+	/* flip the pane when hovered */
+	.flip-container:hover .flipper, .flip-container.hover .flipper {
+		transform: rotateY(180deg);
+	}
 
-var xAxis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom");
+.flip-container, .front, .back {
+	width: 320px;
+	height: 480px;
+}
 
-var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient("left");
+/* flip speed goes here */
+.flipper {
+	transition: 0.6s;
+	transform-style: preserve-3d;
 
-var line = d3.svg.area()
-    .interpolate("basis")
-    .x(function(d) { return x(d.date); })
-    .y(function(d) { return y(d["New York"]); });
+	position: relative;
+}
 
-var area = d3.svg.area()
-    .interpolate("basis")
-    .x(function(d) { return x(d.date); })
-    .y1(function(d) { return y(d["New York"]); });
+/* hide back of pane during swap */
+.front, .back {
+	backface-visibility: hidden;
 
-var svg = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	position: absolute;
+	top: 0;
+	left: 0;
+}
 
-d3.tsv("data.tsv", function(error, data) {
-  data.forEach(function(d) {
-    d.date = parseDate(d.date);
-    d["New York"]= +d["New York"];
-    d["San Francisco"] = +d["San Francisco"];
-  });
+/* front pane, placed above back */
+.front {
+	z-index: 2;
+	/* for firefox 31 */
+	transform: rotateY(0deg);
+}
 
-  x.domain(d3.extent(data, function(d) { return d.date; }));
+/* back, initially hidden pane */
+.back {
+	transform: rotateY(180deg);
+}
+        </style>
+		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+	</head>
+	<body class="homepage">
 
-  y.domain([
-    d3.min(data, function(d) { return Math.min(d["New York"], d["San Francisco"]); }),
-    d3.max(data, function(d) { return Math.max(d["New York"], d["San Francisco"]); })
-  ]);
+		<!-- Header -->
+			<div id="header-wrapper">
+				<div id="header">
+					
+					<!-- Logo -->
+						<h1><a href="index.html">Mission MARS 2020</a></h1>
+					
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								<li class="current"><a href="index.html">Home</a></li>
+								<!--<li>
+									<a href="">Dropdown</a>
+									<ul>
+										<li><a href="#">Lorem ipsum dolor</a></li>
+										<li><a href="#">Magna phasellus</a></li>
+										<li><a href="#">Etiam dolore nisl</a></li>
+										<li>
+											<a href="">Phasellus consequat</a>
+											<ul>
+												<li><a href="#">Magna phasellus</a></li>
+												<li><a href="#">Etiam dolore nisl</a></li>
+												<li><a href="#">Veroeros feugiat</a></li>
+												<li><a href="#">Nisl sed aliquam</a></li>
+												<li><a href="#">Dolore adipiscing</a></li>
+											</ul>
+										</li>
+										<li><a href="#">Veroeros feugiat</a></li>
+									</ul>
+								</li> -->
+                                <li><a href="#team">Team</a></li>
+								<li><a href="#mission">Mission</a></li>
+								<li><a href="#visual">Visualisation</a></li>
+								<li><a href="#contact">Contact</a></li>
+							</ul>
+						</nav>
 
-  svg.datum(data);
+					<!-- Banner -->
+						<section id="banner">
+							<header>
+								<h2>Mission MARS 2020</h2>
+								<p>A SAP Lumira Data Extension Challenge</p>
+							</header>
+						</section>
 
-  svg.append("clipPath")
-      .attr("id", "clip-below")
-    .append("path")
-      .attr("d", area.y0(height));
+					<!-- Intro -->
+						<section id="intro" class="container">
+                          <span id="team"></span>
+							<div class="row">
+                             
+								<div class="4u">
+                                    
+									<section class="first">
+										<!--<i class="icon featured fa-cog"></i> -->
+                                        <img src="images/nikhil.jpg" alt="Nikhil" height="300"/>
+                                        
+										<header>
+											<h2>Nikhil N Jannu</h2>
+                                           
+                                           <!--  <ul class="actions">
+                                            
+                                            <li><a href="https://www.facebook.com/nikhil.nj.946"  ><img src="images/fb.png" width="32px" class="imgBox"/></a></li>
+                                                                    
+                                            <li><a href="#" ><img src="images/twitter.png" class="imgBox"/></a></li>
+                                                                             
+                                            <li><a href="http://in.linkedin.com/pub/nikhil-n-jannu/8a/7ab/243" ><img src="images/linkedin.png" class="imgBox"/></a></li>
+                                              
+                                                 
+                                            </ul>-->
+										</header>
+                                        <footer>
+                                             <ul class="social">
+									<li><a class="icon fa-facebook" href="https://www.facebook.com/nikhil.nj.946"><span class="label">Facebook</span></a></li>
+									<li><a class="icon fa-twitter" href="#"><span class="label">Twitter</span></a></li>
+									
+									<li><a class="icon fa-linkedin" href="http://in.linkedin.com/pub/nikhil-n-jannu/8a/7ab/243"><span class="label">LinkedIn</span></a></li>
+								
+								</ul>
+                                        </footer>
+                                    
+										
+									</section>
+								</div>
+								<div class="4u">
+									<section class="middle">
+										<img src="images/sankha.jpg" alt="Sankha" height="300" />
+										<header>
+											<h2>Sankha Karfa</h2>
+                                         <!--
+                                            <ul class="actions">
+                                            
+                                            <li><a href="http://fb.com/sankha.karfa"  ><img src="images/fb.png" width="32px" class="imgBox"/></a></li>
+                                                                    
+                                            <li><a href="http://twitter.com/sankha_karfa" ><img src="images/twitter.png" class="imgBox"/></a></li>
+                                                                             
+                                            <li><a href="http://in.linkedin.com/pub/sankha-karfa/73/426/209/" ><img src="images/linkedin.png" class="imgBox"/></a></li>
+                                              
+                                                 
+                                            </ul>
+                                         -->      
+                                     
+										</header>
+                                        <footer>
+                                             <ul class="social">
+									<li><a class="icon fa-facebook" href="https://www.facebook.com/sankha.karfa"><span class="label">Facebook</span></a></li>
+									<li><a class="icon fa-twitter" href="http://twitter.com/sankha_karfa"><span class="label">Twitter</span></a></li>
+									
+									<li><a class="icon fa-linkedin" href="http://in.linkedin.com/pub/sankha-karfa/73/426/209/"><span class="label">LinkedIn</span></a></li>
+								
+								</ul>
+                                        </footer>
+									
+									</section>
+								</div>
+								<div class="4u">
+									<section class="last">
+										<img src="images/shabaz.jpg" alt="Shabaz" height="300"  />
+										<header>
+											<h2>Shabaz Ahmed</h2>
+                                            <!--
+                                            <ul class="actions">
+                                            
+                                            <li><a href="https://www.facebook.com/shabaz1993"  ><img src="images/fb.png" width="32px" class="imgBox"/></a></li>
+                                                                    
+                                            <li><a href="#"><img src="images/twitter.png" class="imgBox"/></a></li>
+                                                                             
+                                            <li><a href="http://in.linkedin.com/pub/shabaz-ahmed/42/b4a/810" ><img src="images/linkedin.png" class="imgBox"/></a></li>
+                                              
+                                                 
+                                            </ul>
+                                         -->   
+										</header>
+                                        <footer>
+                                             <ul class="social">
+									<li><a class="icon fa-facebook" href="https://www.facebook.com/shabaz1993"><span class="label">Facebook</span></a></li>
+									<li><a class="icon fa-twitter" href="#"><span class="label">Twitter</span></a></li>
+									
+									<li><a class="icon fa-linkedin" href="http://in.linkedin.com/pub//shabaz-ahmed/42/b4a/810"><span class="label">LinkedIn</span></a></li>
+								
+								</ul>
+                                        </footer>
+										
+									</section>
+								</div>
+							</div>
+                                <header>
+                                           <h1 class="middle" >The Team </h1></header>
+                            <!--
+							<footer>
+								<ul class="actions">
+									<li><a href="#" class="button big">Get Started</a></li>
+									<li><a href="#" class="button alt big">Learn More</a></li>
+								</ul>
+							</footer> -->
+						</section>
+		
+				</div>
+			</div>
 
-  svg.append("clipPath")
-      .attr("id", "clip-above")
-    .append("path")
-      .attr("d", area.y0(0));
+		<!-- Main -->
+			<div id="main-wrapper">
+                
+				<div class="container" id="mission">
+					<div class="row">
+						<div class="12u">
+							
+							<!-- Portfolio -->
+								<section>
+									<header class="major" >
+										<h2>Our Mission</h2>
+									</header>
+									<div class="row">
+										
+										
+										<div class="12u">
+											<section class="box middle">
+												<a href="#" class="image featured"><img src="images/mars.png" alt="" /></a>
+												<header>
+													<h3>To Fetch Data from Mars Weather API and Feed it to SAP Lumira by Making a Data Extension</h3>
+												</header>
+												
+												<footer>
+													<a href="#" class="button alt">Find out more</a>
+												</footer>
+											</section>
+										</div>
+									</div>
+									<div class="row" id="visual">
+										<div class="12u" >
+											<section class="box">
+												
+												<header>
+                                                    <center>
+													<h3 >Sap Lumira Visualisation </h3>
+                                                        
+                                                    </center>
+												</header>
+												
+												<footer>
+                                                    <iframe src="https://cloud.saplumira.com/open?key=54019C5E8EBC0774E10000000A4E4243&type=HANALYTIC" width=100% height="700"></iframe>
+													
+												</footer>
+											</section>
+										</div>
+								
+									</div>
+								</section>
 
-  svg.append("path")
-      .attr("class", "area above")
-      .attr("clip-path", "url(#clip-above)")
-      .attr("d", area.y0(function(d) { return y(d["San Francisco"]); }));
+						</div>
+					</div>
+					<div class="row">
+						<div class="12u">
 
-  svg.append("path")
-      .attr("class", "area below")
-      .attr("clip-path", "url(#clip-below)")
-      .attr("d", area);
+							<!-- Blog -->
+							
+							
+						</div>
+					</div>
+				</div>
+			</div>
 
-  svg.append("path")
-      .attr("class", "line")
-      .attr("d", line);
+		<!-- Footer -->
+			<div id="footer-wrapper">
+                <span id="contact"> </span>
+				<section id="footer" class="container">
+					
+					<div class="row" >
+						<div class="6u">
+							<section>
+								<header>
+									<h2>What's this all about?</h2>
+								</header>
+								<a href="#" class="image featured"><img src="images/sap.png" alt="" /></a>
+								<p>
+									This is <strong>SAP LUMIRA University Challenge.</strong> The Lumira University Challenge encouraged students to think critically about the underlying story in their data and come up with insights, beautiful visualizations and potential solutions from it.
+									
+								</p>
+								<footer>
+									<a href="http://www.saplumira.com/community/lumira-university.php" class="button">Find out more</a>
+								</footer>
+                                </section>
+						</div>
+					
+						<div class="6u">
+							<section>
+								<header>
+									<h2>Contact</h2>
+								</header>
+								<ul class="social">
+									<li><a class="icon fa-github" href="https://github.com/MissionMars2020"><span class="label">Github</span></a></li>
+									
+								</ul>
+								<ul class="contact">
+									<li>
+										<h3>Address</h3>
+										<p>
+											M.S.Ramaiah Institute Of Technology<br />
+											Vidya Soudha , M.S.R. Nagar<br />
+											Bangalore, Karnataka - 560054
+										</p>
+									</li>
+                                    <li>
+										<h3>Mail</h3>
+										<p>contact[at]skarfa.tk</p>
+									</li>
+									
+									<li>
+										<h3>Website</h3>
+										<p><a href="https://github.com/MissionMars2020">Github Page</a></p>
+									</li>
+								</ul>
+							</section>
+						</div>
+					</div>
+					<div class="row">
+						<div class="12u">
+						
+							<!-- Copyright -->
+								<div id="copyright">
+									<ul class="links">
+										<li>&copy; Build3rs. All rights reserved.</li><li>Design: <a href="http://pakoy.wordpress.com">Sankha Karfa</a></li>
+									</ul>
+								</div>
 
-  svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
+						</div>
+					</div>
+                       
+				</section>
+			</div>
 
-  svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-    .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end",)
-      .text("Temperature (ºF)");
-});
-
-</script>
-<!--
-<img src="images/min temp.png" width=80%/></br>
-<img src="images/max temp.png" width=80%/></br>
-
-<img src="images/pressure.png" width=80%/></br>
-<img src="images/wind.png" width=80%/></br>
-<h1> Atmosphere on Mars </h1>
-<iframe src="http://www.daviddarling.info/encyclopedia/M/Marsatmos.html" width=80% height=800></iframe>
-<hr>
-<a name="app"> </a>
-<h1> App </h1>
-<img src="images/abc.png" width=60%/></br>-->
-
-</center>
-</body>
+	</body>
 </html>

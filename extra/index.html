@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+
+<style>
+html { 
+  background: url(images/pic01.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+
+body {
+
+color:#ffffff;
+font: 40px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.area.above {
+  fill: rgb(252,141,89);
+}
+
+.area.below {
+  fill: rgb(145,207,96);
+}
+
+.line {
+  fill: none;
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+</style>
+</head>
+<body>
+<center>
+<h1> Mission Mars 2020 </h1>
+
+<!--
+<h2> App<a href="#app"> .</a> </h2>-->
+<iframe src="https://cloud.saplumira.com/open?key=54019C5E8EBC0774E10000000A4E4243&type=HANALYTIC" width=80% height=700></iframe>
+<!--
+
+<script src="d3.v3.min.js"></script>
+<script>
+
+var margin = {top: 20, right: 20, bottom: 30, left: 50},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var parseDate = d3.time.format("%Y%m%d").parse;
+
+var x = d3.time.scale()
+    .range([0, width]);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left");
+
+var line = d3.svg.area()
+    .interpolate("basis")
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d["New York"]); });
+
+var area = d3.svg.area()
+    .interpolate("basis")
+    .x(function(d) { return x(d.date); })
+    .y1(function(d) { return y(d["New York"]); });
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.tsv("data.tsv", function(error, data) {
+  data.forEach(function(d) {
+    d.date = parseDate(d.date);
+    d["New York"]= +d["New York"];
+    d["San Francisco"] = +d["San Francisco"];
+  });
+
+  x.domain(d3.extent(data, function(d) { return d.date; }));
+
+  y.domain([
+    d3.min(data, function(d) { return Math.min(d["New York"], d["San Francisco"]); }),
+    d3.max(data, function(d) { return Math.max(d["New York"], d["San Francisco"]); })
+  ]);
+
+  svg.datum(data);
+
+  svg.append("clipPath")
+      .attr("id", "clip-below")
+    .append("path")
+      .attr("d", area.y0(height));
+
+  svg.append("clipPath")
+      .attr("id", "clip-above")
+    .append("path")
+      .attr("d", area.y0(0));
+
+  svg.append("path")
+      .attr("class", "area above")
+      .attr("clip-path", "url(#clip-above)")
+      .attr("d", area.y0(function(d) { return y(d["San Francisco"]); }));
+
+  svg.append("path")
+      .attr("class", "area below")
+      .attr("clip-path", "url(#clip-below)")
+      .attr("d", area);
+
+  svg.append("path")
+      .attr("class", "line")
+      .attr("d", line);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end",)
+      .text("Temperature (ºF)");
+});
+
+</script>
+<!--
+<img src="images/min temp.png" width=80%/></br>
+<img src="images/max temp.png" width=80%/></br>
+
+<img src="images/pressure.png" width=80%/></br>
+<img src="images/wind.png" width=80%/></br>
+<h1> Atmosphere on Mars </h1>
+<iframe src="http://www.daviddarling.info/encyclopedia/M/Marsatmos.html" width=80% height=800></iframe>
+<hr>
+<a name="app"> </a>
+<h1> App </h1>
+<img src="images/abc.png" width=60%/></br>-->
+
+</center>
+</body>
+</html>
